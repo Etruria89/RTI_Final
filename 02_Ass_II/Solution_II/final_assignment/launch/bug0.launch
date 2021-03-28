@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <arg name="des_x" default= "-3"/>
+    <arg name="des_y" default= "-3"/>
+    <param name="des_pos_x" value="$(arg des_x)" />
+    <param name="des_pos_y" value="$(arg des_y)" />
+    
+    <!-- create the nodes to the bug zero algorithm -->
+    <node pkg="final_assignment" type="wall_follow_service_m.py" name="wall_follower" />
+    <node pkg="final_assignment" type="go_to_point_service_m.py" name="go_to_point" /> 
+
+    <!-- create the node for the move_base algorithm including the launch file-->
+    <include file="$(find final_assignment)/launch/move_base.launch"></include>
+
+    <!-- create the user interface-->
+    <node pkg="final_assignment" type="user_interface.py" name="user_interface" output="screen" />
+
+    <!-- run the main node -->
+    <node pkg="final_assignment" type="main_m.py" name="main" />
+
+</launch>

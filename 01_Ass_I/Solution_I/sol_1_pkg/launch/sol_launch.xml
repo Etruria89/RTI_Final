@@ -1,0 +1,7 @@
+<launch>
+
+	<node name="New_Target" pkg="sol_1_pkg" type="robot_controller_server.py" output="screen"/>
+	<node name="My_world" pkg="stage_ros" type="stageros" args="$(find assignment1)/world/exercise.world"/>	
+	<node name="Controller" pkg="sol_1_pkg" type="robot_controller_client.py" output="screen"/>
+
+</launch>
