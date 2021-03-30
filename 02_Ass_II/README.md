@@ -2,7 +2,7 @@
 
 ### Content description 
 
-The ROS package **nonholo_control** here presented is to be intended as complementar to the 'final_assignment' and 'gmapping' ones,
+The ROS package **final_assignment** here presented is to be intended as complementar to the 'gmapping' one,
 since all nodes herein are developed in a way that does not require any modification to be made to those ones.
 The content of the package is the following:
 <!---
