@@ -6,7 +6,7 @@ All nodes and custom services are contained in the package **sol_1_pkg**, along 
 
 ## Running the code
 
-The provided **sol_1_pkg** package the python scripts stored in the /sol_1_pkg/scripts must be executable. 
+The provided **sol_1_pkg** package the python scripts stored in the _"/sol_1_pkg/scripts"_ must be executable. 
 and the package has to be compiled running
  
 ```bash
