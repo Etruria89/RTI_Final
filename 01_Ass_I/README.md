@@ -23,7 +23,7 @@ $roslaunch sol_1_pkg sol_launch.xml
 Alternatively, the single nodes can be called, individually, with the commands:
 
 ```bash
-$$rosrun stage_ros stageros $(rospack find assignment1)/world/exercise.world
+$rosrun stage_ros stageros $(rospack find assignment1)/world/exercise.world
 
 $rosrun sol_1_pkg robot_controlloer_server.py
 
