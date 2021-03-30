@@ -6,6 +6,14 @@ All nodes and custom services are contained in the package **sol_1_pkg**, along 
 
 ## Running the code
 
+The provided **sol_1_pkg** package the python scripts stored in the /sol_1_pkg/scripts must be executable. 
+and the package has to be compiled running
+ 
+```bash
+# catkin_make
+```
+in the root directory of the ROS workspace.
+
 The nodes presented can be started together by calling the launch file **sol_launch.xml** included in the package
 
 ```bash
@@ -21,9 +29,6 @@ $rosrun sol_1_pkg robot_controlloer_server.py
 
 $rosrun sol_1_pkg robot_controller_client.py
 ```
-
-It is noteworthy that the implemend nodes provide the control of the holonomic robot only but no actual simulation is included.
-For this reason, the simulation of both the environment and the robot has to be externally started.
 
 ---------
 
