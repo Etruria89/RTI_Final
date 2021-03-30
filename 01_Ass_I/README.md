@@ -1,4 +1,4 @@
-# RT-RT_I-Assignement_I
+# RT_I-Assignement_I
 
 The ROS nodes here contained allow for controlling an holonomic robot by computing the velocity needed to drive it towards a target position.
 the target position is here defined as a simple couple of random values between (-6.0, 6.0).
