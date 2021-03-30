@@ -10,7 +10,7 @@ To run the provided **sol_1_pkg** package the _"/sol_1_pkg/"_ package has to be 
 The python scripts stored in the _"/sol_1_pkg/scripts"_ must be executable and the package has to be compiled running
  
 ```bash
-# catkin_make
+$ catkin_make
 ```
 in the root directory of the ROS workspace.
 
