@@ -48,7 +48,7 @@ $sudo apt-get install ros-<your_ros_version>-stage-ros
 
 ## Relational Graph
 
-![relations between nodes and topics](/Sol_1.png)
+![relations between nodes and topics](Sol_1.png)
 - **cobot controller** is subscribed to _"/odom"_ and publishes in _"/cmd_vel"_, while 
 	calling Services _"/new_target"
 - **new_target** serves for Service _"/new_target"_
