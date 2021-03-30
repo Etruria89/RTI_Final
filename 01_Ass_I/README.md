@@ -1,6 +1,6 @@
 # RT_I-Assignement_I
 
-The ROS nodes here contained allow for controlling an holonomic robot by computing the velocity needed to drive it towards a target position.
+The ROS nodes here contained in the _"/01_Ass_I/Solution_I/sol_1_pkg/"_ folder allow for controlling an holonomic robot by computing the velocity needed to drive it towards a target position.
 The target position is here defined as a couple of random values between (-6.0, 6.0).
 All nodes and custom services are contained in the package **sol_1_pkg**, along with their documentation.
 
