@@ -6,8 +6,8 @@ All nodes and custom services are contained in the package **sol_1_pkg**, along 
 
 ## Running the code
 
-The provided **sol_1_pkg** package the python scripts stored in the _"/sol_1_pkg/scripts"_ must be executable. 
-and the package has to be compiled running
+To run the provided **sol_1_pkg** package the _"/sol_1_pkg/"_ package has to be copied in the local ROS workspace _"./scr"_ folder.
+The python scripts stored in the _"/sol_1_pkg/scripts"_ must be executable and the package has to be compiled running
  
 ```bash
 # catkin_make
@@ -35,24 +35,17 @@ $rosrun sol_1_pkg robot_controller_client.py
 ## Dependencies
 
 The nodes in the package perform the computation by reading from the topics _"/odom"_ and publishing in _"/cmd_vel"_.
-The latters are supplied by an external simulation node, in the specific case, the simulator shared by Professor Recchiuto at the link https://github.com/CarmineD8/assignment1.git has here been used:
+The latters must be supplied by an external simulation node, in the specific case, the simulator shared by Professor Recchiuto at the link https://github.com/CarmineD8/assignment1.git has here been used. The simulator has to be run via the command:
 
 ```bash
 $rosrun stage_ros stageros $(rospack find assignment1)/world/exercise.world
 ```
-Note that this package requires **stage_ros**, which can be obtained with
+Note: This package requires **stage_ros**, which can be obtained with
 ```bash
 $sudo apt-get install ros-<your_ros_version>-stage-ros
 ```
 
 ---------
-
-## Relational Graph
-
-![relations between nodes and topics](Sol_1.png)
-- **cobot controller** is subscribed to _"/odom"_ and publishes in _"/cmd_vel"_, while 
-	calling Services _"/new_target"
-- **new_target** serves for Service _"/new_target"_
 
 ## Nodes
 
@@ -71,7 +64,11 @@ Server node serving new_target, for the Service _"Target"_. When a request is is
 it fills the _response_ field of the Service with a new random position that is composed of two random 
 _x_target_ and _y_target_ coordinates.
 
+## Relational Graph
 
-
+![relations between nodes and topics](Sol_1.png)
+- **cobot controller** is subscribed to _"/odom"_ and publishes in _"/cmd_vel"_, while 
+	calling Services _"/new_target"
+- **new_target** serves for Service _"/new_target"_
 
 
