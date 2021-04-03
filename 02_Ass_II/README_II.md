@@ -6,12 +6,10 @@ The ROS package **final_assignment** here presented is to be intended as complem
 since all nodes herein are developed in a way that does not require any modification to be made to those ones.
 The content of the package is the following:
 
-![package_tree](images/final_tree.png)
+![package_tree](final_tree.png)
 - **CMakeLists.txt:** the cmake file of the package;
-- **nonholo_control.launch:** one of the two launch files specific to the package, contains 
-	the definition of the nodes that relate to the computational part. It includes the re-definition of the
-	nodes already presented in the 'final_assignment' launch files; they're directly written 
-	(and not simply included), due to the various remappings done to the topics those nodes interface with;
+- **final_launcher.launch:** one of the two launch files specific to the package, includes the lauch of the 
+	*/
 - **user_interface.launch:** the other launch file, inside it are defined the nodes that interface with the
 	user and shall thus be run separately from the one constantly printing on video the position of the
 	robot;
