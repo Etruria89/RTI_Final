@@ -51,7 +51,7 @@ the simulation.
 ```bash
 # roslaunch final_assignment simulation_gmapping.launch
 
-# roslaunch nonholo_control nonholo_control.launch
+# roslaunch final_assignment final_launcher.launch
 ```
 ---
 
@@ -74,14 +74,16 @@ Notes:	- The robot is spawn at the location [-4,8]
 ---
 
 ### Design choices
-Due to the fact that most of the features needed for the control of the robot are linked with the 'move_base' node a copy of the 'bug_m' script 
-has been edited to include all the 
-
-Five different parameters have been used to define the status of the robot and specify its bahaviour. Among the others are worth to note:
-'des_pos_x' and  'des_pos_y': to specify the desired coordinates of the robot target (initialized to [-4,7])
-'state_value': to specify the robot status (initialized to 0)
-'target_time': to specify the time for doing specific actions such as keeping the position and following the walls (initialized to 0)
-'bug_trigger': to indicate if the 'bug0' algorithm is active (initializaed to 0 -> Incative)
+A '/main' node direclty interactig with both the 'move_base' and the 'bug0' varibles and topics has here been chosen to control of the robot.
+This node publishes at the same time on the '/cmd_vel' and on the '/move_base/action_topics' topics to specify the velocity/target for any 
+possile active path planning algorithm.
+Analogoulsy, when the target is reached it is the same node that set to zero the '/cmd_vel' topic and publishes on the topic '/move_base/cancel' 
+to indicate that the target has reached. 
+In this implementation, the status of the robot has been controlled using five different parameters:
+'des_pos_x' and  'des_pos_y': two float to specify the desired coordinates of the robot target (initialized to [-4,7])
+'state_value': a integer between 0 and 5 to identify the robot status (initialized to 0)
+'target_time': a positive float to specify the time for doing specific actions such as keeping the position and following the walls (initialized to 0)
+'bug_trigger': a boolean parameter (0/1) to indicate if the 'bug0' algorithm is active (initializaed to 0 -> Incative)
 
 
 
@@ -90,19 +92,7 @@ Five different parameters have been used to define the status of the robot and s
 
 ### Limitations 
 
-Of course, one main issue related to the approach followed is that the entire project is largely unoptimized, many more services and
-checks are implemented with respect to what would have been by modifying few lines of code in the 'bug_m' script. On top of that, the 
-recovery behaviour is quite rudimental and, due to the way the system operates, it automatically changes the planning algorithm to 
-'move_base', no matter what was used before (but it can easily be reverted back to 'bug0' via the UI once the safe goal is reached).
-Even more, having to restart a node to make everything work is generally a strategy to avoid but, since it's technically due to a planning
-error, it's not completely inappropriate either: for sure not the most elegant approach.
-As a side note, more graphical than anything, once a wall following procedure is started the previous goal is still displayed on 
-'rviz', which might confuse an unexperienced user.
-Moreover, having always both planners work on each target but reading up only one of the two outputs is surely a waste of resources,
-which would need to be optimized in a real world scenario.
-Lastly, since the check on a target being reached is leaved to the pre-existing algorithms, the parameters therein define the tolerance
-of the final position with respect to the given goal, which can lead to some occasional problem, where the distance from the target would
-be just slightly larger than the threshold and both 'bug0' and 'move_base' would need few seconds to stop, even if the robot is not moving 
-(but in all tests performed still managed to converge, thanks to 'move_base' target detection). A simple workaround would be to enlarge the
-tolerance value in 'bug_m.py' script to something closer to 0.5, which wasn't done here since that value is hardcoded in the script itself. 
+A clear limitation of the currnt algorithm is the fact that any time that a new target is requested and created, the code automatically acts on both the topic involved in the 'move_base' and the 'bug0' algorithms. A selective publication of the topic conditioned by the current active algorithm could be preferrable.
+Moreover, the algorithm does not allow the user to interrupt any active action without killing the nodes or the control of the robot. for this reason, anytime that the user wants to stop the robot, ho/she has launche again the **final_launcher.launch** script that forces the robot to move back to its initial target stop at coordinates [-4,7].
+From a visualization point of view the target is indicated only if the 'move_base' algorithm is active while the local planned trajectory is continuosly displayed.
 
