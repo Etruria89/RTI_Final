@@ -26,13 +26,11 @@ The content of the package is the following:
 ### Computational graph and communications
 
 ![rqt_graph](images/graph_final.png)
-**Robot_mainframe** node is the one with the most connections,
+**move_base** node is directly the node responsible for the control of the robot.
 from _'/cmd_vel'_ (and relative remapped versions plus the multiplexer governing them, more on that later), to the 
 remapped 'go_to_point' and 'wall_follower' switch, of course both _'/odom'_ and _'/move_base/goal'_ and both the
-topics notifying of target reached or unreachable. All other nodes are, for the most part, simply service providers,
-although (even if it cannot be seen easily from the graph, since services are not shown) some of them still need to
-access other services (such as the **target_reached** node that looks at both the remapped _'/user_interface'_ of the
-**bug** node and the _'/move_base/status'_ to track evidences of the goal being reached).
+topics notifying of target reached or unreachable. 
+The node _'/user_interface'_ is invoked once that the target it seareched to define the next action of the robot.
 
 ---
 
@@ -57,24 +55,26 @@ the simulation.
 ---
 
 ### Robot behaviour
-<!---
-The robot, as demanded, can move around the environment, going towards one of the 6 goal coordinates allowed, using either
-'move_base' or 'bug0' path planning algorithm, accepting new commands each time the previous goal is reached. Moreover, it can start following the walls of the environment without a fixed goal, behaviour during which a new command can be inserted at any given time. It should be mentioned that, due to the limited capabilities of the
-'bug0' algorithm, it's possibile (and rather frequent) that the robots gets stuck in one of the "rooms" in the environment,
-following the walls without ever actually managing to move towards the goal. To address that case, however, a simple recovery
-behaviour has been implemented, having the robot fall back to the previous target (considered as a safe place) using the 'move_base'
-algorithm (which is more robust, already presenting ad-hoc recovery behaviours in case of planning or driving errors) in case more 
-than two minutes pass from the definition of a target and its achievement. While the robot is trying to reach a goal its position,
-goal and distance between the two are printed on screen (and thus to the log file) enabling the tracking of the system.-->
+
+The robot behavior can be defined via the user interface selecting in between six possible differet choices:
+[1] The robot tries to reach a random target position selected between six different predefined spots.
+[2] The robot tries to reach a user defined position selected between six different spots.
+[3] The robot points to the closer wall and, once reached, it starts following it for a predefined amount of time.
+[4] The robot keeps its position for a specified amount of time.
+[5] The robot changes the planning algorithm between the dijkstra's and the 'bug0' one.
+
+Notes:	- The robot is spawn at the location [-4,8]
+	- The dijkstra's algorithm is selected during the initialization as the default path planning algorithm
+	- The first target is initilaized at the location [-4,7]
+	- If the robot is not capable of reaching the new target in two minuts when the 'bug0' algorithm is active
+	  it automatically switches to the  dijkstra's('move_base') one. 
+	
 
 ---
 
-### Architectural choices made
-<!---
-As mentioned, a peculiar design choice was made before starting this project: no modifications were allowed to the _'final_assignment'_
-nor to the _'gmapping'_ packages: this Black Box approach was sought after in order to simulate an industrial environment, where notions
-about the tools given may come solely from the observation of the system behaviour, without any knowledge of the inner mechanisms
-(for whichever legal or industrial reasson). However, being said packages (_'final_assignment'_ in particular) not designed to be used
+### Design choices
+
+. However, being said packages (_'final_assignment'_ in particular) not designed to be used
 in this way, the work that had to be done was quite the challenge and required some non-trivial component to work properly, together with
 some "unelegant" (but, I believe, necessary) choice.
 The atwo algorithms, 'move_base' and 'bug0', have very different approaches to the problem
