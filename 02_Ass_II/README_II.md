@@ -6,7 +6,7 @@ The ROS package **final_assignment** here presented is to be intended as complem
 since all nodes herein are developed in a way that does not require any modification to be made to those ones.
 The content of the package is the following:
 
-![package_tree](final_tree.png)
+![package_tree](/images/final_tree.png)
 - **CMakeLists.txt:** the cmake file of the package;
 - **final_launcher.launch:** one of the two launch files specific to the package, includes the lauch of the 
 	*/
@@ -27,7 +27,7 @@ The content of the package is the following:
 
 ### Computational graph and communications
 
-![rqt_graph](graph_final.png)
+![rqt_graph](/images/graph_final.png)
 **Robot_mainframe** node is the one with the most connections,
 from _'/cmd_vel'_ (and relative remapped versions plus the multiplexer governing them, more on that later), to the 
 remapped 'go_to_point' and 'wall_follower' switch, of course both _'/odom'_ and _'/move_base/goal'_ and both the
