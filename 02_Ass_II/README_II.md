@@ -11,7 +11,7 @@ The content of the package is the following:
 - **simulation_gmapping.launch:** tha is required for the definition of the robot and of the simulation environment
 	it includes the creation of the simulation in **Gazebo** and its visualizarion in **rviz** with pretuned
  	parameters.
-	All the required setting for the simulation are stored in the **worlds**, ***urdf** and **param** folders
+	All the required setting for the simulation are stored in the **worlds**, **urdf** and **param** folders
 - **final_launcher.launch:** the launch files for the nodes required for the control of the robot including:
 	- the move_base node via the **move_base.launch** launcher
 	- the bug_o nodes importing the **go_to_point_service_m.py** and **wall_follow_service_m.py** scripts
@@ -20,14 +20,6 @@ The content of the package is the following:
 - **user_interface.launch:** the other launch file, inside it are defined the nodes that interface with the
 	user and shall thus be run separately from the one constantly printing on video the position of the
 	robot;
-- **random_position_server.cpp:** a ServiceServer generating a random target position among the valid ones;
-- **robot_mainframe.cpp:** the central node, it coordinates all smaller tasks performed by other nodes;
-- **target_reached_detection.cpp:** a message Publisher that sends a message each time a target is received;
-- **unreachable_target_detection.cpp:** detects, in a rather approximative way, whenever the robot is stuck and
-	cannot reach its defined goal, publishing a message on a specific topic in that case;
-- **user_interface.py:** the User Interface, presenting the list of commands that can be issued to the robot;
-- **user_position_server.cpp:** similar to *random_position_server.cpp*, however the position here is asked to the
-	user (but it still has to be one of the predefined ones);
 
 ---
 
