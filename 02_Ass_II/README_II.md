@@ -18,7 +18,7 @@ The content of the package is the following:
 	- the bug_o nodes importing the **go_to_point_service_m.py** and **wall_follow_service_m.py** scripts
 	- the user interface via the **user_interface.py** script
 	- it itializes all the parameters for the robot control.
-- **user_interface.launch:** the other launch file, inside it are defined the nodes that interface with the
+- **user_interface.py:** the other launch file, inside it are defined the nodes that interface with the
 	user and shall thus be run separately from the one constantly printing on video the position of the
 	robot;
 
@@ -74,25 +74,28 @@ Notes:	- The robot is spawn at the location [-4,8]
 ---
 
 ### Design choices
-A '/main' node direclty interactig with both the 'move_base' and the 'bug0' varibles and topics has here been chosen to control of the robot.
+
+A '/main' node direclty interactig with both the 'move_base' and the 'bug0' varibles and topics has here been chosen to control the robot.
 This node publishes at the same time on the '/cmd_vel' and on the '/move_base/action_topics' topics to specify the velocity/target for any 
 possile active path planning algorithm.
 Analogoulsy, when the target is reached it is the same node that set to zero the '/cmd_vel' topic and publishes on the topic '/move_base/cancel' 
-to indicate that the target has reached. 
-In this implementation, the status of the robot has been controlled using five different parameters:
+to indicate that the target has reached.
+A command line based user interface has been here define to specify the new robot action once every time that a certain
+action is sucessfully executed.
+In this specific implementation, the status of the robot is controlled using five different parameters:
 'des_pos_x' and  'des_pos_y': two float to specify the desired coordinates of the robot target (initialized to [-4,7])
 'state_value': a integer between 0 and 5 to identify the robot status (initialized to 0)
 'target_time': a positive float to specify the time for doing specific actions such as keeping the position and following the walls (initialized to 0)
 'bug_trigger': a boolean parameter (0/1) to indicate if the 'bug0' algorithm is active (initializaed to 0 -> Incative)
 
-
-
-
 ---
 
-### Limitations 
+### Limitations and improvements
 
 A clear limitation of the currnt algorithm is the fact that any time that a new target is requested and created, the code automatically acts on both the topic involved in the 'move_base' and the 'bug0' algorithms. A selective publication of the topic conditioned by the current active algorithm could be preferrable.
 Moreover, the algorithm does not allow the user to interrupt any active action without killing the nodes or the control of the robot. for this reason, anytime that the user wants to stop the robot, ho/she has launche again the **final_launcher.launch** script that forces the robot to move back to its initial target stop at coordinates [-4,7].
 From a visualization point of view the target is indicated only if the 'move_base' algorithm is active while the local planned trajectory is continuosly displayed.
+
+In case of failure of the '/main' node there is no back-up strategy to bring the robot in a specified safe position but it simpli stops working.
+
 
