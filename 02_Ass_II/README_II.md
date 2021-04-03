@@ -11,6 +11,7 @@ The content of the package is the following:
 - **simulation_gmapping.launch:** tha is required for the definition of the robot and of the simulation environment
 	it includes the creation of the simulation in **Gazebo** and its visualizarion in **rviz** with pretuned
  	parameters.
+	All the required setting for the simulation are stored in the **worlds**, ***urdf** and **param** folders
 - **final_launcher.launch:** the launch files for the nodes required for the control of the robot including:
 	- the move_base node via the **move_base.launch** launcher
 	- the bug_o nodes importing the **go_to_point_service_m.py** and **wall_follow_service_m.py** scripts
