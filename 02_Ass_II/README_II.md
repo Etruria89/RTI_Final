@@ -8,12 +8,17 @@ The content of the package is the following:
 
 ![package_tree](/images/final_tree.png)
 - **CMakeLists.txt:** the cmake file of the package;
-- **final_launcher.launch:** one of the two launch files specific to the package, includes the lauch of the 
-	*/
+- **simulation_gmapping.launch:** tha is required for the definition of the robot and of the simulation environment
+	it includes the creation of the simulation in **Gazebo** and its visualizarion in **rviz** with pretuned
+ 	parameters.
+- **final_launcher.launch:** the launch files for the nodes required for the control of the robot including:
+	- the move_base node via the **move_base.launch** launcher
+	- the bug_o nodes importing the **go_to_point_service_m.py** and **wall_follow_service_m.py** scripts
+	- the user interface via the **user_interface.py** script
+	- it itializes all the parameters for the robot control.
 - **user_interface.launch:** the other launch file, inside it are defined the nodes that interface with the
 	user and shall thus be run separately from the one constantly printing on video the position of the
 	robot;
-- **package.xml:** the XML file describing package requisites
 - **random_position_server.cpp:** a ServiceServer generating a random target position among the valid ones;
 - **robot_mainframe.cpp:** the central node, it coordinates all smaller tasks performed by other nodes;
 - **target_reached_detection.cpp:** a message Publisher that sends a message each time a target is received;
@@ -39,7 +44,7 @@ access other services (such as the **target_reached** node that looks at both th
 ---
 
 ### Compiling and running
-<!---
+
 Both the _'gmapping'_ and _'final_assignment'_ packages are **necessary** to run the package here provided (and thus
 required by the CMake file). If all three packages are present on the machine it's sufficient to run 
 ```bash
@@ -47,7 +52,7 @@ required by the CMake file). If all three packages are present on the machine it
 ```
 in the root directory of the ROS workspace to compile everything.
 
-As mentioned, two separate launch files are included in the package, both need to be run simultaneously on separate shells
+Two separated launch files are included in the package, both need to be run simultaneously on separate shells
 in order to control the robot and observe its position. Moreover, the _simulation_gmapping.launch_ file present inside
 _'final_assignment'_ package has to be run in another shell window to run both **rviz** and **Gazebo**, necessary for 
 the simulation.
@@ -55,12 +60,7 @@ the simulation.
 # roslaunch final_assignment simulation_gmapping.launch
 
 # roslaunch nonholo_control nonholo_control.launch
-
-# roslaunch nonholo_control user_interface.launch
 ```
-This specific order of the launch files calls is required, in order to have all nodes execution prerequisites met, and it's
-suggested to wait until one of them has finished the startup phase before launching the next one.-->
-
 ---
 
 ### Robot behaviour
