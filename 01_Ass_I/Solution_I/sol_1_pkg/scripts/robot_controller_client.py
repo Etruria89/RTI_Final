@@ -7,6 +7,34 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
 from sol_1_pkg.srv import Target
 
+"""
+This script creates a client for the control of the robot
+
+....
+
+Functions:
+--------------
+
+my_odom(msg): read the robot position from the Odometry nav_msgs.msg
+        topic
+
+main(): Control robot velocity and target achievemetn.
+
+Initialization:
+--------------
+
+Initial position of the robot:
+	x_pose = 0.0 (global variable)
+	y_pose = 0.0 (global variable)
+Threshold between target and robot to ensure the target achievement
+	d_th = 0.1 (global parameter)
+Gain on the speed value proportional to the distance between robot
+and target
+	speed_gain = 0.5 (global parameter)
+
+"""
+
+
 
 #Initialize the pose
 x_pose = 0.0
@@ -17,6 +45,17 @@ speed_gain = 0.5
 
 #Here the callback to read the position
 def my_odom(msg):
+
+    """
+    Parameters:
+    ----------
+    msg : it subscibes to the topic Odometry
+          with an instance msg
+
+    when subscribed provide access to robot positon
+    updates the global variables x_pose and y_pose
+
+    """
     #Define global varaibles
     global x_pose
     global y_pose
@@ -25,6 +64,23 @@ def my_odom(msg):
     y_pose = msg.pose.pose.position.y
 
 def main():
+
+    """Control robot velocity and target achievement.
+
+    When the robot simulation is active it 
+    subscribes to the odometry topic and
+    changes the robot speed 
+    publishing on the topic /cmd_vel. 
+    It checks the relative
+    position between the robot and the target.
+    When the target is reached it makes a request to the 
+    service Target to get a new target.
+
+    Parameters:
+    ----------
+    none 
+     
+    """
     
     #Create a subscriber to the odometry
     odo_sub = rospy.Subscriber("odom", Odometry,my_odom)
@@ -85,8 +141,9 @@ if __name__ == '__main__':
 
     try:
 	#initialize the node
+	# anonymous is True to ahve more than a listener
     	rospy.init_node("robot_controller", anonymous="True",disable_signals=True)
      	main()	
 	rate.sleep()
     except KeyboardInterrupt:
-	print("Fuori")
+	print("Out")
