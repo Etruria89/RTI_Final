@@ -5,10 +5,9 @@
 The ROS package **final_assignment** here presented is to be intended as complementar to the 'gmapping' one,
 since all nodes herein are developed in a way that does not require any modification to be made to those ones.
 The content of the package is the following:
-<!---
+
 ![package_tree](images/package_tree.png)
 - **CMakeLists.txt:** the cmake file of the package;
-- **map_library.h:** a simple header file for a shared function regarding the usage of a std::map structure;
 - **nonholo_control.launch:** one of the two launch files specific to the package, contains 
 	the definition of the nodes that relate to the computational part. It includes the re-definition of the
 	nodes already presented in the 'final_assignment' launch files; they're directly written 
@@ -17,33 +16,21 @@ The content of the package is the following:
 	user and shall thus be run separately from the one constantly printing on video the position of the
 	robot;
 - **package.xml:** the XML file describing package requisites
-- **nonholo_params.yaml:** small parameter file containing variables shared between all the nodes;
-- **bug_restart_service.py:** python script that invokes *roslaunch* API to launch (actually restart) a separate node
-	(bug_m), the process and the motivations are described later on);
-- **gotopo_wllflw_redirect.cpp:** a ServiceServer that forwards service calls for 'go_to_point_switch' and 
-	'wall_follower_switch', redirected in the launch file (only when certain conditions are met);
-- **map_library.cpp:** the executable for the aforementioned library;
 - **random_position_server.cpp:** a ServiceServer generating a random target position among the valid ones;
 - **robot_mainframe.cpp:** the central node, it coordinates all smaller tasks performed by other nodes;
 - **target_reached_detection.cpp:** a message Publisher that sends a message each time a target is received;
 - **unreachable_target_detection.cpp:** detects, in a rather approximative way, whenever the robot is stuck and
 	cannot reach its defined goal, publishing a message on a specific topic in that case;
-- **user_interface.cpp:** the User Interface, presenting the list of commands that can be issued to the robot;
+- **user_interface.py:** the User Interface, presenting the list of commands that can be issued to the robot;
 - **user_position_server.cpp:** similar to *random_position_server.cpp*, however the position here is asked to the
 	user (but it still has to be one of the predefined ones);
-- **TargetPos.srv:** a service structure defining the target position;
-- **UIMenu.srv:** a service structure defining the user choice inserted in the UI;
-
-Please notice that this is but a quick description, a more in depth explanation is contained inside each script.
 
 ---
 
 ### Computational graph and communications
 
-![rqt_graph](images/nonholo_graph.png)
-The graph of this project might seem quite complex at first glance, but many services are just used for quick
-event notification (meaning that they're empty services or messages which receival is the important part, not
-any data therein). As mentioned, and as can be seen, **robot_mainframe** node is the one with the most connections,
+![rqt_graph](images/final_2.png)
+**Robot_mainframe** node is the one with the most connections,
 from _'/cmd_vel'_ (and relative remapped versions plus the multiplexer governing them, more on that later), to the 
 remapped 'go_to_point' and 'wall_follower' switch, of course both _'/odom'_ and _'/move_base/goal'_ and both the
 topics notifying of target reached or unreachable. All other nodes are, for the most part, simply service providers,
