@@ -7,7 +7,7 @@ since all nodes herein are developed in a way that does not require any modifica
 The content of the package is the following:
 
 ![package_tree](images/final_tree.png)
-- **CMakeLists.txt:** the cmake file of the package;
+- **CMakeLists.txt:** the cmake file of the package; 
 - **simulation_gmapping.launch:** tha is required for the definition of the robot and of the simulation environment
 	it includes the creation of the simulation in **Gazebo** and its visualizarion in **rviz** with pretuned
  	parameters.
