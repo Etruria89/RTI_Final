@@ -31,11 +31,11 @@ The content of the package is the following:
 ### Robot behaviour
 
 The robot behavior can be defined via the user interface selecting in between six possible differet choices:
-[1] The robot tries to reach a random target position selected between six different predefined spots.
-[2] The robot tries to reach a user defined position selected between six different spots.
-[3] The robot points to the closer wall and, once reached, it starts following it for a predefined amount of time.
-[4] The robot keeps its position for a specified amount of time.
-[5] The robot changes the planning algorithm between the dijkstra's and the 'bug0' one.
+- [1] The robot tries to reach a random target position selected between six different predefined spots.
+- [2] The robot tries to reach a user defined position selected between six different spots.
+- [3] The robot points to the closer wall and, once reached, it starts following it for a predefined amount of time.
+- [4] The robot keeps its position for a specified amount of time.
+- [5] The robot changes the planning algorithm between the dijkstra's and the 'bug0' one.
 
 Notes:	- The robot is spawn at the location [-4,8]
 	- The dijkstra's algorithm is selected during the initialization as the default path planning algorithm
