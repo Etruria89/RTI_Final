@@ -63,13 +63,12 @@ state_ = rospy.get_param('state_value')
 # 4 - sleeping in the position
 
 def clbk_odom(msg):
+    """
+    Reads the odometry topic of the robot and store it in dedicated global varaibles
+    """
     global position_, yaw_
 
-    """
-
-    Reads the odometry topic of the robot and store it in dedicated global varaibles
-
-    """
+  
 
     # position
     position_ = msg.pose.pose.position
