@@ -9,10 +9,10 @@ The ROS package **sol_1_pkg** here presented contents is the following:
 ![package_tree](Sol_1_tree.png)
 - **CMakeLists.txt:** the cmake file of the package;
 - **package.xml:** the XML file describing package requisites
-- **sol_launch.xml:** a laucher that includes the run of all the nodes required for the control of the robot
+- **sol_launch.xml:** a launcher that includes the run of all the nodes required for the control of the robot
 	including:
 	- the **robot_controller_client.py** script for controlling the speed of the robot,
-	  checking the achievent of the target postion and requesting a new target to the server
+	  checking the achievement of the target position and requesting a new target to the server
 	- the **robot_controller_server.py** script for the creation of the service needed to provide new targets
 	  to the robot	
 - **Target.srv:** a server that provides the new target to the robot.
@@ -64,13 +64,13 @@ $sudo apt-get install ros-<your_ros_version>-stage-ros
 
 ## Nodes
 
-Two nodes are present, one Service Server and one publishing the velocity informations.
+Two nodes are present, one Service Server and one publishing the velocity information.
 
 #### robot controller
 
 This node is the one responsible for publishing velocity data on the topic _"/cmd_vel"_.
 It reads the estimated position of the active robot from the _"/odom"_ topic and, if the current target hasn't been reached, .
-it updates the speed of the robot multipling a fixed gain term and the difference in between the current position of the robot and the target point.
+it updates the speed of the robot multiplying a fixed gain term and the difference in between the current position of the robot and the target point.
 Once reached the target, the node will call the Service new_target which will provide the coordinates of a new point to reach on the map.
 
 #### new_target
