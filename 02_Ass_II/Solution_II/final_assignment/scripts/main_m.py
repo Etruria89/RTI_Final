@@ -13,8 +13,25 @@ from geometry_msgs.msg import Twist
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from actionlib_msgs.msg import GoalID
 from final_assignment.srv import Target
-
 import math
+
+
+"""
+This script includes the main node for the control
+of the non-holonomic robot 
+ 
+...
+    
+Functions
+-----------
+main(): controls the bahaviour of the robot setting the speed for the bug0 algorithm and the target for the move_base one
+clbk_odom(msg) : reads the odometry of the robot
+clbk_laser(msg) : reads the laser sensor information of the robot
+change_state(state): change the state of the robot behaviour
+normalize_angle (angle): it normalize the angular position of the robot to geta value in between 0 and 2 pi
+
+"""
+
 
 pub = None
 srv_client_go_to_point_ = None
@@ -48,6 +65,12 @@ state_ = rospy.get_param('state_value')
 def clbk_odom(msg):
     global position_, yaw_
 
+    """
+
+    Reads the odometry topic of the robot and store it in dedicated global varaibles
+
+    """
+
     # position
     position_ = msg.pose.pose.position
 
@@ -62,6 +85,12 @@ def clbk_odom(msg):
 
 
 def clbk_laser(msg):
+    """
+
+    Reads the laser scan of the robot, it process it to reduce its size down to 5 values
+    and store it in dedicated global varaibles
+
+    """
     global regions_
     regions_ = {
         'right':  min(min(msg.ranges[0:143]), 10),
@@ -73,6 +102,22 @@ def clbk_laser(msg):
 
 
 def change_state(state):
+
+    """
+
+    This function is responsible for specifyng the behaviour of the robot by defining its state.
+    It is called the by the main node after that a target is reached and the input parameters have been
+    set in the user intrface.
+    This function depending on the specific state reaad from the server parameter the list the 
+    settings of each desired state and it forwards them to teh main function to 
+    publish the information in teh specific topic.
+
+    This function is also called with state == 2 when an action has been sucessfully accomplished to request a new input and it cancels the target of the /move_base
+	node by publishing in the node /move_base/cancel.
+    Alternatively it can be triggered when the 'Bug_0' algorithm is active but the robot has not been able to reach the target
+    after a specified amount of time set to 120 seconds
+
+    """
     global state_, state_desc_, start, bug_trigger
     global srv_client_wall_follower_, srv_client_go_to_point
     
@@ -133,12 +178,30 @@ def change_state(state):
 
 
 def normalize_angle(angle):
+
+    """
+    This function normalizes the angle value
+    """
     if(math.fabs(angle) > math.pi):
         angle = angle - (2 * math.pi * angle) / (math.fabs(angle))
     return angle
 
 
 def main():
+
+    """
+    This is the main function of the robot control:
+
+	The robot acquires information about the robot position via the /odom and the /scan topics.
+	This function initializes the /main node responsible for:
+		- publishing the target on the /move_base/goal topic
+		- activating and deactivating the bug_0 nodes including /go_to_point_switch and /wall_follower_switch 
+			accordingly with the user requirements
+		- calling the change_state function when needed: 
+			- action accomplished
+			- robot incapable of reaching the target using the "Bug_0" planner							
+
+    """
     
     time.sleep(2)
     global regions_, position_, desired_position_, state_, yaw_, yaw_error_allowed_, start, bug_trigger

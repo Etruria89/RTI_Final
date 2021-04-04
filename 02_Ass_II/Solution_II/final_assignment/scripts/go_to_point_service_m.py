@@ -10,6 +10,22 @@ from std_srvs.srv import *
 
 import math
 
+"""
+This script implements the go_to_point behaviour
+part of the bug_0 algorithm
+
+...
+    
+Functions
+-----------
+main(): controls the bahaviour of the robot setting the speed for the bug0 algorithm and the target for the move_base one
+clbk_odom(msg) : reads the odometry of the robot
+clbk_laser(msg) : reads the laser sensor information of the robot
+change_state(state): change the state of the robot behaviour
+normalize_angle (angle): it normalize the angular position of the robot to geta value in between 0 and 2 pi
+
+"""
+
 active_ = False
 
 # robot state variables
@@ -40,6 +56,11 @@ pub = None
 
 
 def go_to_point_switch(req):
+    """
+
+    Switch function to activate/deactivate the go_to_point planner
+
+    """
     global active_
     active_ = req.data
     res = SetBoolResponse()
@@ -53,6 +74,12 @@ def go_to_point_switch(req):
 def clbk_odom(msg):
     global position_
     global yaw_
+
+    """
+
+    Reads the odometry topic of the robot and store it in dedicated global varaibles
+
+    """
 
     # position
     position_ = msg.pose.pose.position
@@ -68,18 +95,32 @@ def clbk_odom(msg):
 
 
 def change_state(state):
+    """
+    This changes the state of the robot in the go_to_point service
+    """
     global state_
     state_ = state
     print ('State changed to [%s]' % state_)
 
 
 def normalize_angle(angle):
+    """
+    This function normalizes the angle value
+    """
     if(math.fabs(angle) > math.pi):
         angle = angle - (2 * math.pi * angle) / (math.fabs(angle))
     return angle
 
 
 def fix_yaw(des_pos):
+    """
+
+    A fucntion that define the yaw of the robot according to
+	its current position and the target.
+    It publishes on the /cmd_vel topic of the robot to set its 
+	angular position aligned with the target
+
+    """
     global yaw_, pub, yaw_precision_2_, state_
     desired_yaw = math.atan2(des_pos.y - position_.y, des_pos.x - position_.x)
     err_yaw = normalize_angle(desired_yaw - yaw_)
@@ -103,6 +144,14 @@ def fix_yaw(des_pos):
 
 
 def go_straight_ahead(des_pos):
+    """
+
+    A fucntion that define the speed of the robot according to
+	its current position and the target.
+    It publishes on the /cmd_vel topic of the robot to set its 
+	linear velocity once the robot is aligned with the target
+
+    """
     global yaw_, pub, yaw_precision_, state_
     desired_yaw = math.atan2(des_pos.y - position_.y, des_pos.x - position_.x)
     err_yaw = desired_yaw - yaw_
@@ -128,6 +177,14 @@ def go_straight_ahead(des_pos):
 
 
 def done(des_pos):
+    """
+
+    A fucntion that stops the robot when the target is reached.
+    It publishes on the /cmd_vel topic of the robot to set its 
+	linear velocity to zero once the robot is
+	close enough to the target
+
+    """
     twist_msg = Twist()
     twist_msg.linear.x = 0
     twist_msg.angular.z = 0

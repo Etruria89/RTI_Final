@@ -7,13 +7,56 @@ import time
 from std_srvs.srv import *
 from final_assignment.srv import Target
 
+"""
+This script handles the user iterface node for selecting the robot behaviour
+ 
+...
+    
+Functions
+-----------
+user_interface(): user interface function
+main() : main code for the server definition
+
+"""
+
 # service callback
 target_array = [[-4,-3],[-4,2],[-4,7],[5,-7],[5,-3],[5,1]]
 
 #Iitialize the client for requesting the target_id 
 restart = rospy.ServiceProxy('rand_target_id', Target)
+rospy.init_node('user_interface')
 
-def set_new_pos(req):
+def user_interface(req):
+
+
+    """ The function prints on the command line a user interface 
+	for the definition of the next action for the robot
+
+	The function request the user an integer to specify the new desired behaviour
+        (beh_int) and additional parameters to specify the required action.
+	The relevant parameters in the ros parameter server.	 
+
+    ------
+
+    Parameters
+    -----------
+    des_pos_x : float that defines the old x postion of the target read from the parameter list 
+    des_pos_y : float that defines old y postion of the target read from the parameter list 
+    state_value : integer set to required behaviour in the parameter server 
+    target_time : positive float value that specify the required amout of time for the wall_following [3] and the keep position [2] action
+	          it is set via teh user interface
+    bug_trigger : Boolean that specifies if the bug_0 algorithm is active (1) or inactive (0)
+    
+
+    Internal variables
+    -------------------
+    beh_int: integer to specify the desired robot behaviour:
+	[1] Random target position requested to the "/target_provider" server 
+	[2] User defined new target via the integer input "tar_id"
+	[3] Wall follow behaviour for "wall_time" seconds
+	[4] Keep the position for "wall_time" seconds
+	[5] Move_base to Bug_0 path planning algorithm switch
+    """ 
 
     time.sleep(1)
     print("Please select the new behaviour:")
@@ -98,17 +141,27 @@ def set_new_pos(req):
     return []
 
 def main():
+    
+    """ The node handles for the user interface.
 
-    rospy.init_node('user_interface')
+	It handles the set of the user interface 
 
+    ------
+
+    Parameters
+    -----------
+    des_pos_x: x postion of the target read from the parameter list need for the first target definition
+    des_pos_y: y postion of the target read from the parameter list need for the first target definition
+
+    """ 
     x = rospy.get_param("des_pos_x")
     y = rospy.get_param("des_pos_y")
     print("Hi! We are reaching the first position: x = " +
-          str(x) + ", y = " + str(y))
-    srv = rospy.Service('user_interface', Empty, set_new_pos)
+        str(x) + ", y = " + str(y))
+    rospy.Service('user_interface', Empty, user_interface)
     rate = rospy.Rate(20)
-    
-    while not rospy.is_shutdown():
+
+    while not rospy.is_shutdown(): 	
         rate.sleep()
 
 

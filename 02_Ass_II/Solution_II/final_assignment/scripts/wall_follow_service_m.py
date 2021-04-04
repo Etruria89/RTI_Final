@@ -9,6 +9,22 @@ from std_srvs.srv import *
 
 import math
 
+"""
+This script implements the wall following behaviour
+part of the bug_0 algorithm
+ 
+...
+    
+Functions
+-----------
+main(): controls the bahaviour of the robot setting the speed for the bug0 algorithm and the target for the move_base one
+clbk_odom(msg) : reads the odometry of the robot
+clbk_laser(msg) : reads the laser sensor information of the robot
+change_state(state): change the state of the robot behaviour
+normalize_angle (angle): it normalize the angular position of the robot to geta value in between 0 and 2 pi
+
+"""
+
 active_ = False
 
 pub_ = None
@@ -28,6 +44,11 @@ state_dict_ = {
 
 
 def wall_follower_switch(req):
+    """
+
+    Switch function to activate/deactivate the wall following planner
+
+    """
     global active_
     active_ = req.data
     res = SetBoolResponse()
@@ -37,6 +58,11 @@ def wall_follower_switch(req):
 
 
 def clbk_laser(msg):
+    """
+
+    Reads the odometry topic of the robot and store it in dedicated global varaibles
+
+    """
     global regions_
     regions_ = {
         'right':  min(min(msg.ranges[0:143]), 10),
@@ -50,6 +76,9 @@ def clbk_laser(msg):
 
 
 def change_state(state):
+    """
+    This changes the state of the robot in the go_to_point service
+    """
     global state_, state_dict_
     if state is not state_:
         print ('Wall follower - [%s] - %s' % (state, state_dict_[state]))
@@ -57,6 +86,9 @@ def change_state(state):
 
 
 def take_action():
+    """
+    This function defines the possible action to take according to the robot position and orientation
+    """
     global regions_
     regions = regions_
     msg = Twist()
@@ -97,6 +129,9 @@ def take_action():
 
 
 def find_wall():
+    """
+    This function set a linear and angular velocity ro find the wall
+    """
     msg = Twist()
     msg.linear.x = 0.3
     msg.angular.z = -0.6
@@ -104,12 +139,18 @@ def find_wall():
 
 
 def turn_left():
+    """
+    This function set an angular velocity to make the robot turn left
+    """
     msg = Twist()
     msg.angular.z = 0.8
     return msg
 
 
 def follow_the_wall():
+    """
+    This function set an lineaer velocity to make the robot follow the wall
+    """
     global regions_
 
     msg = Twist()
@@ -118,6 +159,9 @@ def follow_the_wall():
 
 
 def main():
+    """
+    This function handles the robot rotation and linear velocity to make it follow the wall
+    """
     global pub_, active_
 
     rospy.init_node('reading_laser')

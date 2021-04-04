@@ -13,7 +13,7 @@ the new targets id for the robot
 Function
 -----------
 target_rand(req): fills the server placeholder target_id with 
-   a random number between 0 and 5
+   a random number between 1 and 6
 
 """
 
@@ -30,7 +30,7 @@ def target_rand(req):
     int32 target_id
 
     when called fills the server placeholders target id
-    with a random integer number between 0 and 5 
+    with a random integer number between 1 and 6 
 
     """
      
