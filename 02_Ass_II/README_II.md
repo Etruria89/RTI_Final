@@ -17,7 +17,7 @@ The content of the package is the following:
 - **final_launcher.launch:** the launch files for the nodes required for the control of the robot including:
 	- the main node from **main_m.py** that manages the control of the robot
 	- the move_base node via the **move_base.launch** launcher
-	- the bug_o nodes importing the **go_to_point_service_m.py** and **wall_follow_service_m.py** scripts
+	- the bug_0 nodes importing the **go_to_point_service_m.py** and **wall_follow_service_m.py** scripts
 	- the user interface via the **user_interface.py** script
 	- the server node _'/target_provider'_ via the **possition_server.py** script 
 	- it initializes all the parameters for the robot control.
@@ -87,14 +87,14 @@ Notes: All the python scripts in the -'/scripts'_ folder must be executable.
 ### Design choices
 
 A _'/main'_ node direclty interactig with both the 'move_base' and the 'bug0' varibles and topics has here been chosen to control the robot.
-This node publishes at the same time on the '/cmd_vel' and on the '/move_base/action_topics' topics to specify the velocity/target for any 
+This node publishes at the same time on the '/cmd_vel' and on the '/move_base/goal' topics to specify the velocity/target for any 
 possible active path planning algorithm. 
-When the target is reached it is the same node that set to zero the '/cmd_vel' topic and publishes on the topic '/move_base/cancel' 
-to indicate that the target has reached.
-The same node is responsible also for managing any other possible behaviours implemented in this non-holonomic robot.
-As previously mentioned, the robot, independently from the active path planning algorithm can start following the walls of the environment or keep its position, both these actions are executed for a user defined amount of time. 
+When the target is reached, it is the _'/main'_ node that set to zero the '/cmd_vel' topic and publishes on the topic '/move_base/cancel' 
+to indicate that the target has reached and cancel the target of the move_base algorithm.
+The same node is also responsible for managing any other possible behaviours implemented in this non-holonomic robot.
+As previously mentioned, the robot, independently from the active path planning algorithm can start following the walls of the environment or keep its position. Both these behaviours are executed for a user defined amount of time. 
 Every time that an action is completed the '/main' nodes calls the user interface that handles the new required action and is responsible for interacting with the 
-A command line based user interface has been here defined to specify the new robot action and, if a new random target is requested, it interacts with the _'/target_provider'_ server to get a new location to be reached.
+A command line based user interface has been here defined to specify the new robot action and, if a new random target is requested, it interacts with the _'/target_provider'_ service to get a new location to be reached.
 In this specific implementation, the status of the robot is controlled using five different parameters:
 'des_pos_x' and  'des_pos_y': two float to specify the desired coordinates of the robot target (initialized to [-4,7])
 'state_value': a integer between 0 and 5 to identify the robot status (initialized to 0)
@@ -106,10 +106,17 @@ The same monitoring status could have been possible by using independent server.
 
 ### Limitations and improvements
 
-A clear limitation of the currnt algorithm is the fact that any time that a new target is requested and created, the code automatically acts on both the topic involved in the 'move_base' and the 'bug0' algorithms. A selective publication of the topic conditioned by the current active algorithm could be preferrable.
-Moreover, the algorithm does not allow the user to interrupt any active action without killing the nodes or the control of the robot. for this reason, anytime that the user wants to stop the robot, ho/she has launche again the **final_launcher.launch** script that forces the robot to move back to its initial target stop at coordinates [-4,7].
-From a visualization point of view the target is indicated only if the 'move_base' algorithm is active while the local planned trajectory is continuosly displayed.
-
-In case of failure of the '/main' node there is no back-up strategy to bring the robot in a specified safe position but it simpli stops working.
+- A clear limitation of the currnet algorithm is the fact that any time that a new target is requested and created, the code automatically acts on both the topic involved in the 'move_base' and the 'bug0' algorithms. 
+A selective publication of the topic conditioned by the current active algorithm could be preferrable.
+Moreover, the algorithm does not allow the user to interrupt any active action without killing the nodes or the control of the robot. 
+For this reason, anytime that the user wants to stop the robot, he/she has to launch again the **final_launcher.launch** script that forces the robot to move back to its initial target stop at coordinates [-4,7].
+A system to interrupt the robot current action and trigger the user interface to specify a new action at anytime whould be preferrable.
+Moreover, in case of failure of the '/main' node there is no back-up strategy to bring the robot in a specified safe position but it simply stops working. The implementation of a safe arrest position and a recovery condition would be preferrable.
+- In the current verion when the _'wall_folloiwing'_ [3] status in requested the robot look for the closer wall detected by the laser sensor and it points that wall.
+Unfortunately in this behaviour, the closer wall detected by the sensor does not always with the closer wall in absolute terms since it depends on the robot pose. 
+To identify the closer wall in absolute term the robot should make a 360 complete turn and scan the whole surrounding environment in order to define and store the orientation of the closer wall and only then point it and proceed to reach the wall. This improvement has noticed but not impreoved in this version of the package.
+- From a visualization point of view it has to be noticed that
+	-  The target is indicated only if the 'move_base' algorithm is the selected one
+	-  The local planned trajectory is continuosly displayed even if the 'bug_0' algorithm is the active one.
 
 
