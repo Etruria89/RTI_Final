@@ -38,11 +38,10 @@ The robot behavior can be defined via the user interface selecting in between si
 - **[5]** The robot changes the planning algorithm between the dijkstra's and the 'bug0' one.
 
 Notes:
-	- The robot is spawn at the location [-4,8]
-	- The dijkstra's algorithm is selected during the initialization as the default path planning algorithm
-	- The first target is initilaized at the location [-4,7]
-	- If the robot is not capable of reaching the new target in two minuts when the 'bug0' algorithm is active
-	  it automatically switches to the  dijkstra's('move_base') one. 
+- The robot is spawn at the location [-4,8]
+- The dijkstra's algorithm is selected during the initialization as the default path planning algorithm
+- The first target is initilaized at the location [-4,7]
+- If the robot is not capable of reaching the new target in two minuts when the 'bug0' algorithm is active it automatically switches to the  dijkstra's('move_base') one. 
 	  
 ---
 
