@@ -6,7 +6,7 @@ The ROS package **final_assignment** here presented is to be intended as complem
 since all nodes herein are developed in a way that does not require any modification to be made to those ones.
 The content of the package is the following:
 
-![package_tree](images/final_tree.png)
+![package_tree](images/final_tree_2.png)
 - **CMakeLists.txt:** the cmake file of the package; 
 - **simulation_gmapping.launch:** tha is required for the definition of the robot and of the simulation environment
 	it includes the creation of the simulation in **Gazebo** and its visualizarion in **rviz** with pretuned
