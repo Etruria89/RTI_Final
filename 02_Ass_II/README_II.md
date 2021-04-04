@@ -20,7 +20,7 @@ The content of the package is the following:
 	- it itializes all the parameters for the robot control.
 - **user_interface.py:** the other launch file, inside it are defined the nodes that interface with the
 	user and shall thus be run separately from the one constantly printing on video the position of the
-	robot;
+	robot.
 
 ---
 
