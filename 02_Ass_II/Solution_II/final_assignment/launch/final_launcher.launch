@@ -23,6 +23,9 @@
     <!-- create the user interface -->
     <node pkg="final_assignment" type="user_interface.py" name="user_interface" output="screen" />
 
+    <!-- run the server node for providing the input in case of random choice  -->
+    <node pkg="final_assignment" type="position_server.py" name="target_provider" output="screen" />
+
     <!-- run the main node  -->
     <node pkg="final_assignment" type="main_m.py" name="main" output="screen" />
 

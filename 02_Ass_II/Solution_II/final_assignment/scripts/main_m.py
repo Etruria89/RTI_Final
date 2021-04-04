@@ -12,6 +12,7 @@ from std_srvs.srv import *
 from geometry_msgs.msg import Twist
 from move_base_msgs.msg import MoveBaseActionGoal, MoveBaseGoal
 from actionlib_msgs.msg import GoalID
+from final_assignment.srv import Target
 
 import math
 
@@ -33,6 +34,8 @@ move_base_goal.target_pose.pose.position.x = rospy.get_param('des_pos_x')
 move_base_goal.target_pose.pose.position.y = rospy.get_param('des_pos_y')
 move_base_goal.target_pose.pose.orientation.w = 1.0
 move_base_goal.target_pose.header.frame_id = '/map'
+
+
 
 state_desc_ = ['Go to point', 'Wall following for avoiding obstacles', 'Mission accomplished! :)', 'I love following the walls.','I am sleeping.','Planning algorithm changed!']
 state_ = rospy.get_param('state_value')
@@ -208,7 +211,7 @@ def main():
 	    # trick not to get stuck close to the target  
             if(err_pos < 0.3):
 		twist_msg = Twist()
-        	twist_msg.linear.x = math.sqrt(pow(desired_position_.y - position_.y,
+        	twist_msg.linear.x = 0.1 * math.sqrt(pow(desired_position_.y - position_.y,
                                     2) + pow(desired_position_.x - position_.x, 2))
         	twist_msg.angular.z = 0
         	pub.publish(twist_msg) 

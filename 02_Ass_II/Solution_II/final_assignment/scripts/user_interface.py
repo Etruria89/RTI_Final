@@ -5,9 +5,13 @@ import rospy
 import random
 import time
 from std_srvs.srv import *
+from final_assignment.srv import Target
 
 # service callback
 target_array = [[-4,-3],[-4,2],[-4,7],[5,-7],[5,-3],[5,1]]
+
+#Iitialize the client for requesting the target_id 
+restart = rospy.ServiceProxy('rand_target_id', Target)
 
 def set_new_pos(req):
 
@@ -31,7 +35,11 @@ def set_new_pos(req):
 
 	while x_old == x and y_old ==y:	
             if beh_int == 1:
-	        target = random.choice(target_array)
+		target = restart()
+    	    	target_id = target.target_id
+		print('Service called:')
+		print(target_id) 
+	        target = target_array[target_id-1]
             elif beh_int == 2:
 	    	print("Choose your target [(-4,-3),(-4,2),(-4,7),(5,-7),(5,-3),(5,1)]")
 	    	print("Choose a value of the target id in between 1 and 6")
