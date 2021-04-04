@@ -1,4 +1,4 @@
-# Research Track 1 - Assignements
+# Research Track 1 - Assignments
 
 The two forlders here contained cover the assignments due for the Research Track I course 
 
