@@ -4,25 +4,18 @@ The ROS nodes here contained in the _"/01_Ass_I/Solution_I/sol_1_pkg/"_ folder a
 The target position is here defined as a couple of random values between (-6.0, 6.0).
 All nodes and custom services are contained in the package **sol_1_pkg**, along with their documentation.
 
-The ROS package **final_assignment** here presented is to be intended as complementar to the 'gmapping' one,
-since all nodes herein are developed in a way that does not require any modification to be made to those ones.
-The content of the package is the following:
+The ROS package **sol_1_pkg** here presented contents is the following:
 
 ![package_tree](Sol_1_tree.png)
 - **CMakeLists.txt:** the cmake file of the package;
-- **simulation_gmapping.launch:** tha is required for the definition of the robot and of the simulation environment
-	it includes the creation of the simulation in **Gazebo** and its visualizarion in **rviz** with pretuned
- 	parameters.
-	All the required setting for the simulation are stored in the **worlds**, **urdf** and **param** folders
-- **final_launcher.launch:** the launch files for the nodes required for the control of the robot including:
-	- the main node from **main_m.py** that manages the control of the robot
-	- the move_base node via the **move_base.launch** launcher
-	- the bug_o nodes importing the **go_to_point_service_m.py** and **wall_follow_service_m.py** scripts
-	- the user interface via the **user_interface.py** script
-	- it itializes all the parameters for the robot control.
-- **user_interface.py:** the other launch file, inside it are defined the nodes that interface with the
-	user and shall thus be run separately from the one constantly printing on video the position of the
-	robot.
+- **package.xml:** the XML file describing package requisites
+- **sol_launch.xml:** a laucher that includes the run of all the nodes required for the control of the robot
+	including:
+	- the **robot_controller_server.py** script for the creation of the service needed to provide new targets
+	  to the robot
+	- the **robot_controller_client.py** script for controlling the speed of the robot,
+	  checking the achievent of the target postion and requesting new target to the server
+- **Target.srv:** a server that provides the new target to the robot
 
 ---
 
