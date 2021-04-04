@@ -11,10 +11,10 @@ The ROS package **sol_1_pkg** here presented contents is the following:
 - **package.xml:** the XML file describing package requisites
 - **sol_launch.xml:** a laucher that includes the run of all the nodes required for the control of the robot
 	including:
-	- the **robot_controller_server.py** script for the creation of the service needed to provide new targets
-	  to the robot
 	- the **robot_controller_client.py** script for controlling the speed of the robot,
-	  checking the achievent of the target postion and requesting new target to the server
+	  checking the achievent of the target postion and requesting a new target to the server
+	- the **robot_controller_server.py** script for the creation of the service needed to provide new targets
+	  to the robot	
 - **Target.srv:** a server that provides the new target to the robot
 
 ---
