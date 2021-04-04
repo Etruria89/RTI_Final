@@ -28,14 +28,35 @@ The content of the package is the following:
 
 ---
 
+### Robot behaviour
+
+The robot behavior can be defined via the user interface selecting in between six possible differet choices:
+[1] The robot tries to reach a random target position selected between six different predefined spots.
+[2] The robot tries to reach a user defined position selected between six different spots.
+[3] The robot points to the closer wall and, once reached, it starts following it for a predefined amount of time.
+[4] The robot keeps its position for a specified amount of time.
+[5] The robot changes the planning algorithm between the dijkstra's and the 'bug0' one.
+
+Notes:	- The robot is spawn at the location [-4,8]
+	- The dijkstra's algorithm is selected during the initialization as the default path planning algorithm
+	- The first target is initilaized at the location [-4,7]
+	- If the robot is not capable of reaching the new target in two minuts when the 'bug0' algorithm is active
+	  it automatically switches to the  dijkstra's('move_base') one. 
+	  
+---
+
 ### Computational graph and communications
 
 ![rqt_graph](images/graph_final.png)
-**move_base** node is directly the node responsible for the control of the robot.
-from _'/cmd_vel'_ (and relative remapped versions plus the multiplexer governing them, more on that later), to the 
-remapped 'go_to_point' and 'wall_follower' switch, of course both _'/odom'_ and _'/move_base/goal'_ and both the
-topics notifying of target reached or unreachable. 
-The node _'/user_interface'_ is invoked once that the target it seareched to define the next action of the robot.
+The **/main** node is the direct responsible for the robot control.
+It receives the information from the robot about its current position (_'/odom'_) and the laser sensor (_'/scan'_) and it interacts with both the 'bug0' and the 'move_base' controller.
+On one side, it sets and cancels the target of the _'/move_base'_ node by publishing on the topics _'/move_base/goal'_ and _'/move_base/cancel'_; the robot then automatically computes the best path accordingly with its knowledge of the environment (_'/map'_). 
+On the other side, when the 'bug_0' algorithm is active, the **/main** node sets directly the speed of the robot publishing on the _'/cmd_vel'_ topic.
+Other robot behaviours, such as the wall following and the keeping of the position are locally set at the level of the **/main** node and the parameters
+for the control internally set and updated.
+Once that the desired action is completed the **/main** node interacts with the user interface requesting for a new action to be executed.
+The new actions are handled by the user interface (_'user_interface'_) updating the internal parameters required for the specific action.
+If a new random target is required, it is directly the user interface that request a new target to the service _'/target_provider'_
 
 ---
 
@@ -59,20 +80,9 @@ the simulation.
 ```
 ---
 
-### Robot behaviour
+Notes: All the python scripts in the -'/scripts'_ folder must be executable.
 
-The robot behavior can be defined via the user interface selecting in between six possible differet choices:
-[1] The robot tries to reach a random target position selected between six different predefined spots.
-[2] The robot tries to reach a user defined position selected between six different spots.
-[3] The robot points to the closer wall and, once reached, it starts following it for a predefined amount of time.
-[4] The robot keeps its position for a specified amount of time.
-[5] The robot changes the planning algorithm between the dijkstra's and the 'bug0' one.
 
-Notes:	- The robot is spawn at the location [-4,8]
-	- The dijkstra's algorithm is selected during the initialization as the default path planning algorithm
-	- The first target is initilaized at the location [-4,7]
-	- If the robot is not capable of reaching the new target in two minuts when the 'bug0' algorithm is active
-	  it automatically switches to the  dijkstra's('move_base') one. 
 	
 
 ---
