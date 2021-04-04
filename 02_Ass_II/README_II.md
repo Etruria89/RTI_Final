@@ -6,7 +6,7 @@ The ROS package **final_assignment** here presented is to be intended as complem
 since all nodes herein are developed in a way that does not require any modification to be made to those ones.
 The content of the package is the following:
 
-![package_tree](images/final_tree_2.png)
+![package_tree](images/final_tree.png)
 - **CMakeLists.txt:** the cmake file of the package; 
 - **simulation_gmapping.launch:** tha is required for the definition of the robot and of the simulation environment
 	it includes the creation of the simulation in **Gazebo** and its visualizarion in **rviz** with pretuned
@@ -26,7 +26,7 @@ The content of the package is the following:
 
 ### Computational graph and communications
 
-![rqt_graph](images/graph_final_2.png)
+![rqt_graph](images/graph_final.png)
 **move_base** node is directly the node responsible for the control of the robot.
 from _'/cmd_vel'_ (and relative remapped versions plus the multiplexer governing them, more on that later), to the 
 remapped 'go_to_point' and 'wall_follower' switch, of course both _'/odom'_ and _'/move_base/goal'_ and both the
