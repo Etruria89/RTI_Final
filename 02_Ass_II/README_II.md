@@ -8,6 +8,7 @@ The content of the package is the following:
 
 ![package_tree](images/final_tree_2.png)
 - **CMakeLists.txt:** the cmake file of the package; 
+- **package.xml:** the XML file describing package requisites
 - **simulation_gmapping.launch:** tha is required for the definition of the robot and of the simulation environment
 	it includes the creation of the simulation in **Gazebo** and its visualizarion in **rviz** with pretuned
  	parameters.
@@ -17,10 +18,12 @@ The content of the package is the following:
 	- the move_base node via the **move_base.launch** launcher
 	- the bug_o nodes importing the **go_to_point_service_m.py** and **wall_follow_service_m.py** scripts
 	- the user interface via the **user_interface.py** script
+	- the server node _'/target_provider'_ via the **possition_server.py** script 
 	- it itializes all the parameters for the robot control.
 - **user_interface.py:** the other launch file, inside it are defined the nodes that interface with the
 	user and shall thus be run separately from the one constantly printing on video the position of the
 	robot.
+- **Target.srv:** a server that provides the new target id to the robot.
 
 ---
 
